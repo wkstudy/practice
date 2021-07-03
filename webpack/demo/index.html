@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <script src="./index.js"></script> -->
+  </head>
+  <body></body>
+  <!-- step1 初步实现 -->
+  <script>
+    var exports = {};
+    eval(`exports.default = function (a, b) {
+  return a + b;
+}`);
+    var add = exports.default;
+    console.log(add(0, 1));
+  </script>
+
+  <!-- step2 避免全剧污染 -->
+  <script>
+    var exports = {};
+    (function (exports) {
+      eval(`var a = 1; exports.default = function (a, b) {
+      return a + b;
+      }`);
+    })(exports);
+
+    var add = exports.default;
+    console.log(add(0, 2));
+  </script>
+
+  <!-- step3 require实现 -->
+  <script>
+    function require() {
+      var exports = {};
+      (function (exports) {
+        eval(`var a = 1; exports.default = function (a, b) {
+          return a + b;
+          }`);
+      })(exports);
+
+      return exports;
+    }
+
+    var add = require().default;
+    console.log(add(0, 3));
+  </script>
+</html>
